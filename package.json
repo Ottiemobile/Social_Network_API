@@ -1,0 +1,27 @@
+{
+  "name": "Social_Network_API",
+  "version": "1.0.0",
+  "description": "Creates an api for a social media website using Mongodb for noSQL database data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ottiemobile/Social_Network_API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ottiemobile/Social_Network_API/issues"
+  },
+  "homepage": "https://github.com/Ottiemobile/Social_Network_API#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jest": "^26.4.2",
+    "moment": "^2.29.0",
+    "mongoose": "^5.10.7"
+  }
+}
