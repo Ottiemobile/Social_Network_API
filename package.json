@@ -1,5 +1,5 @@
 {
-  "name": "Social_Network_API",
+  "name": "social_network_api",
   "version": "1.0.0",
   "description": "Creates an api for a social media website using Mongodb for noSQL database data",
   "main": "index.js",
@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "jest": "^26.4.2",
     "moment": "^2.29.0",
-    "mongoose": "^5.10.7"
-  }
+    "mongoose": "^5.10.9"
+  },
+  "devDependencies": {}
 }
