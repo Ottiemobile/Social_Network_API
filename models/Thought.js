@@ -1,7 +1,7 @@
 const { Schema , model } = require('mongoose');
 const moment = require('moment');
 
-const ThoughtSchema = new Schema(
+const thoughtSchema = new Schema(
     {
 
         username: {
@@ -40,9 +40,9 @@ const ThoughtSchema = new Schema(
 
 
 
-const Thought = model('Thought', ThoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
-ThoughtSchema.virtual('reactionCount').get(function(){
+thoughtSchema.virtual('reactionCount').get(function(){
     return this.reactions.length;
 })
 
