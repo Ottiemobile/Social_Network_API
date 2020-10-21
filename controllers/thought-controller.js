@@ -1,7 +1,7 @@
 const { User, Thought } = require('../models');
 
 const thoughtController = {
-    // get All function
+    // Function finds all Thoughts
     findAllThoughts(req, res) {
         Thought.find()
         .select('-__v')
@@ -13,9 +13,9 @@ const thoughtController = {
         })
     },
 
-    // get One function
+    // Function finds one Thought
     findOneThought({ params }, res) {
-        User.findOne({ _id: params.thoughtId })
+        Thought.findOne({ _id: params.thoughtId })
             .populate({
                 path:'reactions',
                 select: '-__v'
@@ -41,10 +41,101 @@ const thoughtController = {
 
 
     },
+    // Function creates Thought object
+    createThought({ body }, res) {
+        Thought.create(body)
+            .then(({ _id }) => {
+                return User.findOneAndUpdate(
+                    { _id: body.userId },
+                    { $push: { thoughts: _id }},
+                    { new: true }
+                );
+            })
+            .then(dbThoughtData => {
+                if (!dbThoughtData) {
+                    res.status(404).json({ message: 'Error 404: User Data not found'});
+                }
+                res.json(dbThoughtData);
+            })
+            .catch(err => {
+                res.status(400).json(err);
+            });
+    },
 
-    createThought()
+    // Function updates Thought object by id
+    updateThought({ params, body }, res) {
+        Thought.findOneAndUpdate({ _id: params.id}, body, { new: true, runValidators: true })
+            .then(dbThoughtData => {
+                if(!dbThoughtData) {
+                    res.status(404).json({ message: 'Error 404: thought Data not found' });
+                    return;
+                }
+                res.json(dbThoughtData);
+            })
+            .catch(err => {
+                res.status(400).json(err);
+            });
+    },
 
 
+    //function that deletes the Thought by ID
+    deleteThought({ params }, res) {
+        Thought.findOneAndDelete({ _id: params.id })
+        .then(dbThoughtData => {
+            if(!dbThoughtData) {
+                res.status(404).json({ message: 'Error 404: Thought data not found'});
+                return;
+            }
+            res.json(dbThoughtData)
+        })
+        .catch(err => {
+            res.status(400).json(err)
+        });
+    },
+
+    addReaction({params, body}, res) {
+        Thought.findByIdAndUpdate(
+            { _id: params.thoughtId},
+            { $push: {reactions: body}},
+            {new: true, runValidators: true}
+        )
+
+        .populate({ path: 'reactions', select: '-__v'})
+
+        .select('-__v')
+
+        .then(dbThoughtData => {
+            if(!dbThoughtData) {
+                res.status(404).json({ message: 'Error 404: Thought data not found'});
+                return; 
+            }
+            res.json(dbThoughtData);
+        })
+        .catch(err => { 
+           res.status(400).json(err) 
+        });
+
+
+
+
+
+
+    },
+
+    deleteReaction({ params }, res) {
+        Thought.findOneAndUpdate(
+            { _id: params.thoughtId },
+            { $pull: {reactions: {reactionId: params.reactionId}}},
+            { new: true }
+        )
+        .then(dbThoughtData => {
+            if(!dbThoughtData){
+                res.status(404).json({ message: 'Error 404: Thought data not found'});
+                return;
+            }
+            res.json(dbThoughtData)
+        })
+    }
 
 
 };
