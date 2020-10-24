@@ -50,8 +50,6 @@ const userController = {
             {_id: params.id},
             body,
             {new: true, runValidators:true })
-            .populate('friends')
-            .populate(thoughts)
             .then(dbUserData => {
                 if(!dbUserData) {
                     res.status(404).json({ message: 'Error 404: User Data not found.'});
@@ -118,7 +116,7 @@ const userController = {
 
     deleteFriend({ params }, res) {
         User.findOneAndUpdate(
-            { _id: params.id },
+            { _id: params.userId },
             { $pull: {friends: params.friendId }},
             { new: true }
         )
