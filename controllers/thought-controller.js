@@ -64,7 +64,7 @@ const thoughtController = {
 
     // Function updates Thought object by id
     updateThought({ params, body }, res) {
-        Thought.findOneAndUpdate({ _id: req.params.thoughtId}, body, { new: true, runValidators: true })
+        Thought.findOneAndUpdate({ _id: params.thoughtId}, body, { new: true, runValidators: true })
             .then(dbThoughtData => {
                 if(!dbThoughtData) {
                     res.status(404).json({ message: 'Error 404: thought Data not found' });
@@ -124,8 +124,8 @@ const thoughtController = {
 
     deleteReaction({ params }, res) {
         Thought.findOneAndUpdate(
-            { _id: params.reactionId },
-            { $pull: {reactions: { _id: params.reactionId}}},
+            { _id: params.thoughtId },
+            { $pull: {reactions: { reactionId: params.reactionId}}},
             { new: true }
         )
         .then(dbThoughtData => {
